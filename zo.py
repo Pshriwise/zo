@@ -59,7 +59,7 @@ def bib_nicknames(bib):
     if path.exists(bib):
         with open(bib, 'r') as f:
             for line in f.readlines():
-                if line[0] == '@':
+                if line[0] == '@' and line[1:5].lower() != 'book':
                     nicknames.add(line.split('{')[1].split(',')[0].strip())
     return nicknames
 
@@ -138,7 +138,7 @@ def make(project, parent, child):
     print(out)
 
 def status():
-    files = find_pdfs(path.join(getenv("HOME"), "refs"))
+    files = find_pdfs(path.join(getenv("HOME"), "refs/files"))
     refs = bib_nicknames(path.join(getenv("HOME"), "refs", "refs.bib"))
     out = _printer(files & refs, "Files that are good to go:")
     out += _printer(files - refs, "\nFiles missing .bib entries:")
@@ -160,7 +160,7 @@ def grep(repo, args):
                 print(full_path)
 
 def vince(nickname):
-    system('evince $HOME/refs/{0}.pdf &>/dev/null &'. format(nickname))
+    system('evince $HOME/refs/files/{0}.pdf &>/dev/null &'. format(nickname))
 
 def main():
     parser = argparse.ArgumentParser()
